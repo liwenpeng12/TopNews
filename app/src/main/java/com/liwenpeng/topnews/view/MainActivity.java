@@ -103,14 +103,17 @@ public class MainActivity extends AppCompatActivity {
                         tabLayout.addTab(shishangab);
     }
 
+
     private void initView() {
         tabLayout = findViewById(R.id.main_tab_layout);
         viewPager = findViewById(R.id.main_iew_pager);
         Log.d(TAG,"fragment :"+fragments);
         if (mainViewPagerAdapter == null){
-            mainViewPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager(), fragments, mTabName.length);
+            mainViewPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager(), fragments, mTabName.length,mTabName);
         }
+
         viewPager.setAdapter(mainViewPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
