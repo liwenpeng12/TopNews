@@ -3,6 +3,7 @@ package com.liwenpeng.topnews.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,12 @@ import java.util.List;
 
 /**
  * Created by fh on 18-4-2.
+ * 如何实现分页加载？
  */
 
 public class TopRecycleViewAdapter extends RecyclerView.Adapter<TopRecycleViewAdapter.ViewHolder> {
     private final String Key = "INTENT_URL";
+    private final String TAG = "TopRecycleViewAdapter";
     private List<NewsBean.ResultBean.DataBean> mData;
     private Context context;
 
@@ -31,6 +34,10 @@ public class TopRecycleViewAdapter extends RecyclerView.Adapter<TopRecycleViewAd
     private TextView tv_author;
     private TextView top_date;
     private TextView tv_title;
+    private int ONCE = 10;
+    private int page = 1;
+    private int mNum = 0;
+    private boolean first_in = true;
 
     public TopRecycleViewAdapter(List<NewsBean.ResultBean.DataBean> data) {
         this.mData = data;
@@ -38,6 +45,7 @@ public class TopRecycleViewAdapter extends RecyclerView.Adapter<TopRecycleViewAd
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d(TAG,"onCreateViewHolder");
         context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.top_news_adapter, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
@@ -46,6 +54,7 @@ public class TopRecycleViewAdapter extends RecyclerView.Adapter<TopRecycleViewAd
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+        Log.d(TAG,"onBindViewHolder");
         String pic_s1 = mData.get(position).getThumbnail_pic_s();
         String pic_title = mData.get(position).getTitle();
         String date = mData.get(position).getDate();
@@ -67,7 +76,12 @@ public class TopRecycleViewAdapter extends RecyclerView.Adapter<TopRecycleViewAd
 
     @Override
     public int getItemCount() {
-        return 30;
+        Log.d(TAG,"getItemCount :");
+
+            return  10;
+
+
+
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -79,4 +93,8 @@ public class TopRecycleViewAdapter extends RecyclerView.Adapter<TopRecycleViewAd
             tv_title = itemView.findViewById(R.id.top_text_title);
         }
     }
+
+
+
+
 }
