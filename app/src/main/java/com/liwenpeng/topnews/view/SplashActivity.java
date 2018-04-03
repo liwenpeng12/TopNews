@@ -10,6 +10,8 @@ import android.widget.Button;
 
 import com.liwenpeng.topnews.R;
 
+import org.litepal.LitePal;
+
 public class SplashActivity extends AppCompatActivity {
 
     private CustomVideoView customVideoView;
@@ -19,6 +21,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         customVideoView = findViewById(R.id.videoview);
+        LitePal.getDatabase();
         Button button = findViewById(R.id.btn_start);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -6,13 +6,23 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.SearchView;
 
 import com.liwenpeng.topnews.R;
 import com.liwenpeng.topnews.adapter.MainViewPagerAdapter;
 import com.liwenpeng.topnews.bean.NewsBean;
+import com.liwenpeng.topnews.view.fragment.CaiJingFragment;
+import com.liwenpeng.topnews.view.fragment.GuoJiFragment;
+import com.liwenpeng.topnews.view.fragment.GuoNeiFragment;
+import com.liwenpeng.topnews.view.fragment.JunShiFragment;
+import com.liwenpeng.topnews.view.fragment.KeJiFragment;
 import com.liwenpeng.topnews.view.fragment.ShehuiFragment;
+import com.liwenpeng.topnews.view.fragment.ShiShangFragment;
+import com.liwenpeng.topnews.view.fragment.TiYuFragment;
 import com.liwenpeng.topnews.view.fragment.TopFragment;
+import com.liwenpeng.topnews.view.fragment.YuLeFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +48,12 @@ public class MainActivity extends AppCompatActivity {
     private ShehuiFragment shehuiFragment;
     private MainViewPagerAdapter mainViewPagerAdapter;
     private boolean hasClickedBack = false;
-    private Fragment[] fragments = new Fragment[]{new TopFragment(), new ShehuiFragment()};
+    private Fragment[] fragments = new Fragment[]{new TopFragment(), new ShehuiFragment(),new GuoNeiFragment(),
+    new GuoJiFragment(),new YuLeFragment(),new TiYuFragment(),
+    new JunShiFragment(),new KeJiFragment(),new CaiJingFragment(),new ShiShangFragment()};
+    private SearchView searchView;
+    private RecyclerView recyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,40 +61,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.d(TAG, "mTabName.length :" + mTabName.length);
         initView();
-        initData();
-
-//        requestNet();
     }
-
-    private void initData() {
-
-
-        TabLayout.Tab top_tab = tabLayout.newTab().setText(mTabName[0]);
-        tabLayout.addTab(top_tab);
-        TabLayout.Tab shehuitab = tabLayout.newTab().setText(mTabName[1]);
-        tabLayout.addTab(shehuitab);
-        TabLayout.Tab guonei_tab = tabLayout.newTab().setText(mTabName[2]);
-        tabLayout.addTab(guonei_tab);
-        TabLayout.Tab guoji_tab = tabLayout.newTab().setText(mTabName[3]);
-        tabLayout.addTab(guoji_tab);
-        TabLayout.Tab yule_tab = tabLayout.newTab().setText(mTabName[4]);
-        tabLayout.addTab(yule_tab);
-        TabLayout.Tab tiyu_tab = tabLayout.newTab().setText(mTabName[5]);
-        tabLayout.addTab(tiyu_tab);
-        TabLayout.Tab junshi_tab = tabLayout.newTab().setText(mTabName[6]);
-        tabLayout.addTab(junshi_tab);
-        TabLayout.Tab keji_tab = tabLayout.newTab().setText(mTabName[7]);
-        tabLayout.addTab(keji_tab);
-        TabLayout.Tab caijing_tab = tabLayout.newTab().setText(mTabName[8]);
-        tabLayout.addTab(caijing_tab);
-        TabLayout.Tab shishangab = tabLayout.newTab().setText(mTabName[9]);
-        tabLayout.addTab(shishangab);
-    }
-
-
     private void initView() {
         tabLayout = findViewById(R.id.main_tab_layout);
         viewPager = findViewById(R.id.main_iew_pager);
+        searchView = findViewById(R.id.main_searchView);
+        recyclerView = findViewById(R.id.search_recycleview);
         Log.d(TAG, "fragment :" + fragments);
         if (mainViewPagerAdapter == null) {
             mainViewPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager(), fragments, mTabName.length, mTabName);

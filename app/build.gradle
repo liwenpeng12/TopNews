@@ -29,6 +29,14 @@ dependencies {
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1'
     compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.5.1'//没有使用特殊Header，可以不加这行
 
+    //注解
+    compile 'com.android.support:support-annotations:26.1.0'
+
+    //圆形图片
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
+    //数据库
+    compile 'org.litepal.android:core:1.6.1'
 
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
     compile 'com.google.code.gson:gson:2.8.2'

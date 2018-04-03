@@ -29,9 +29,9 @@ import java.util.List;
  * liwenpeng
  * 2018/4/1 22:28
  */
-public class TopFragment extends Fragment  {
-    private String url = UrlBaseConstant.TOP_URL;
+public class YuLeFragment extends Fragment  {
 
+    private String url = UrlBaseConstant.YULE_URL;
     private RecyclerView recyclerView;
     private NewsBean topResponse;
     private static final String TAg = "TopFragment";
@@ -63,7 +63,6 @@ public class TopFragment extends Fragment  {
                 Log.d(TAg,"getResult :"+topResponse.getResult());
                 Log.d(TAg,"getData :"+topResponse.getResult().getData());
                 data = topResponse.getResult().getData();
-
                 Log.d(TAg,"data :"+data.size());
                 for (int i = 0 ; i <10 ;i ++){
                     mCutData.add(data.get(i));
@@ -111,7 +110,7 @@ public class TopFragment extends Fragment  {
                                     RecycleViewAdapter recycleViewAdapter = new RecycleViewAdapter(data);
                                     recyclerView.setAdapter(recycleViewAdapter);
                                     hasLoadDataONCE = true;
-                                  //  refreshlayout.setEnableRefresh(false);
+                                    //  refreshlayout.setEnableRefresh(false);
                                 }
 
 

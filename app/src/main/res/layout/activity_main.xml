@@ -6,6 +6,38 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context="com.liwenpeng.topnews.view.MainActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_height="40dp">
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image"
+            android:layout_width="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:layout_height="20dp"
+            android:src="@mipmap/ic_launcher"
+           />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/profile_image"
+            android:orientation="vertical"
+            >
+            <SearchView
+                android:id="@+id/main_searchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:iconifiedByDefault="false"
+                android:queryHint="请输入搜索内容" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/search_recycleview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </RelativeLayout>
 <android.support.design.widget.TabLayout
     android:id="@+id/main_tab_layout"
     android:layout_width="wrap_content"
@@ -17,7 +49,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-
     </android.support.v4.view.ViewPager>
 
 </LinearLayout>
