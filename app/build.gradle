@@ -37,6 +37,8 @@ dependencies {
 
     //数据库
     compile 'org.litepal.android:core:1.6.1'
+    //轮播图
+    compile 'com.youth.banner:banner:1.4.10'  //最新版本
 
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
     compile 'com.google.code.gson:gson:2.8.2'
