@@ -10,4 +10,5 @@ public class ToolUtils {
     public static boolean isMainThread() {
         return Looper.getMainLooper() == Looper.myLooper();
     }
+
 }
