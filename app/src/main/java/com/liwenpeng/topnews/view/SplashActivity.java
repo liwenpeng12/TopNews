@@ -10,7 +10,7 @@ import android.widget.Button;
 
 import com.liwenpeng.topnews.R;
 
-import org.litepal.LitePal;
+
 
 public class SplashActivity extends AppCompatActivity {
 

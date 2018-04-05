@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+apply plugin: 'org.greenrobot.greendao' // apply plugin
+
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -9,6 +11,11 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    greendao{
+        schemaVersion 3
+        targetGenDir 'src/main/java'
     }
     buildTypes {
         release {
@@ -36,7 +43,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
     //数据库
-    compile 'org.litepal.android:core:1.6.1'
+    compile 'org.greenrobot:greendao:3.2.2' // add library
     //轮播图
     compile 'com.youth.banner:banner:1.4.10'  //最新版本
 

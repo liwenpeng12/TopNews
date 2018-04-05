@@ -24,7 +24,6 @@ import com.liwenpeng.topnews.view.fragment.TiYuFragment;
 import com.liwenpeng.topnews.view.fragment.TopFragment;
 import com.liwenpeng.topnews.view.fragment.YuLeFragment;
 
-import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,8 +60,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        LitePal.getDatabase();
+
         Log.d(TAG, "mTabName.length :" + mTabName.length);
+
         initView();
     }
     private void initView() {
