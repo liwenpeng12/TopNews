@@ -1,10 +1,17 @@
 package com.liwenpeng.topnews.view;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.provider.MediaStore;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +19,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -39,11 +47,15 @@ import com.liwenpeng.topnews.view.fragment.YuLeFragment;
 import org.greenrobot.greendao.Property;
 import org.greenrobot.greendao.query.QueryBuilder;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    private static final int TAKE_PHOTO = 1;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private List<NewsBean> mNewsBeanList = new ArrayList<>();
@@ -70,7 +82,12 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     private List<GDBean> list;
     private ListSearchHistoryAdapter listSearchHistoryAdapter;
+    private NavigationView navigationView;
     //  private RecyclerView recyclerView;
+    //circleimage拍照
+    private Uri imageUri;
+    private de.hdodenhof.circleimageview.CircleImageView imageViewheader;
+    private View headerView;
 
 
     @Override
@@ -145,6 +162,34 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.main_iew_pager);
         searchView = findViewById(R.id.main_searchView);
         listView = findViewById(R.id.main_listview);
+        navigationView = findViewById(R.id.navgation_view);
+        headerView = navigationView.getHeaderView(0);
+        imageViewheader = headerView.findViewById(R.id.iv_header);
+        imageViewheader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this,"点击更换图片",Toast.LENGTH_SHORT).show();
+                File outputImage = new File(getExternalCacheDir(),"output_image.jpg");
+                if (outputImage.exists()){
+                    outputImage.delete();
+                }
+                try {
+                    outputImage.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (Build.VERSION.SDK_INT >=24){
+                    imageUri = FileProvider.getUriForFile(MainActivity.this,"com.liwenpeng.datashare",outputImage);
+                }else {
+                    imageUri = Uri.fromFile(outputImage);
+                }
+                Intent intent =new Intent("android.media.action.IMAGE_CAPTURE");
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+                startActivityForResult(intent,TAKE_PHOTO);
+
+
+            }
+        });
         //  recyclerView = findViewById(R.id.search_recycleview);
         Log.d(TAG, "fragment :" + fragments);
         if (mainViewPagerAdapter == null) {
@@ -182,5 +227,22 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         finish();
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case TAKE_PHOTO:
+                if (resultCode == RESULT_OK){
+                    try {
+                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+                        imageViewheader.setImageBitmap(bitmap);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+        }
+
     }
 }
