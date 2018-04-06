@@ -1,5 +1,6 @@
 package com.liwenpeng.topnews.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.design.widget.TabLayout;
@@ -7,12 +8,22 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
+import com.liwenpeng.topnews.MyApplication;
 import com.liwenpeng.topnews.R;
+import com.liwenpeng.topnews.adapter.ListSearchHistoryAdapter;
 import com.liwenpeng.topnews.adapter.MainViewPagerAdapter;
 import com.liwenpeng.topnews.bean.NewsBean;
+import com.liwenpeng.topnews.bean.table_search_history.SearchHistoryBean;
+import com.liwenpeng.topnews.bean.table_top.GDBean;
+import com.liwenpeng.topnews.bean.table_top.GDBeanDao;
 import com.liwenpeng.topnews.view.fragment.CaiJingFragment;
 import com.liwenpeng.topnews.view.fragment.GuoJiFragment;
 import com.liwenpeng.topnews.view.fragment.GuoNeiFragment;
@@ -24,6 +35,9 @@ import com.liwenpeng.topnews.view.fragment.TiYuFragment;
 import com.liwenpeng.topnews.view.fragment.TopFragment;
 import com.liwenpeng.topnews.view.fragment.YuLeFragment;
 
+
+import org.greenrobot.greendao.Property;
+import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +67,10 @@ public class MainActivity extends AppCompatActivity {
     new GuoJiFragment(),new YuLeFragment(),new TiYuFragment(),
     new JunShiFragment(),new KeJiFragment(),new CaiJingFragment(),new ShiShangFragment()};
     private SearchView searchView;
-    private RecyclerView recyclerView;
+    private ListView listView;
+    private List<GDBean> list;
+    private ListSearchHistoryAdapter listSearchHistoryAdapter;
+    //  private RecyclerView recyclerView;
 
 
     @Override
@@ -64,12 +81,71 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "mTabName.length :" + mTabName.length);
 
         initView();
+        initData();
     }
+
+    private void initData() {
+      //点击了焦点后的变化
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                Toast.makeText(MainActivity.this,"onFocusChange",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        //进行了搜索点击或者输入字体后调用的方法
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                Toast.makeText(MainActivity.this,"onQueryTextSubmit :"+s,Toast.LENGTH_SHORT).show();
+                //模糊搜索判断是否有该字段，如果没有则提示没有数据不保存到数据库，如果有则将字符串和对应的url保存
+                QueryBuilder<GDBean> qb = MyApplication.getInstances().getDaoSession().getGDBeanDao().queryBuilder();
+                qb.where(GDBeanDao.Properties.Title.like("%"+s+"%"));
+                List<GDBean> list = qb.list();
+
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+            if (!TextUtils.isEmpty(s)){
+                Toast.makeText(MainActivity.this,"onQueryTextChange不为空",Toast.LENGTH_SHORT).show();
+                //进行数据库字段模糊搜索
+                QueryBuilder<GDBean> qb = MyApplication.getInstances().getDaoSession().getGDBeanDao().queryBuilder();
+                qb.where(GDBeanDao.Properties.Title.like("%"+s+"%"));
+                list = qb.list();
+                listSearchHistoryAdapter = new ListSearchHistoryAdapter(MainActivity.this, list);
+                listView.setAdapter(listSearchHistoryAdapter);
+                return true;
+            }else {
+                Toast.makeText(MainActivity.this,"onQueryTextChange为空",Toast.LENGTH_SHORT).show();
+                list.clear();
+                listSearchHistoryAdapter.notifyDataSetChanged();
+
+                return false;
+            }
+
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(MainActivity.this,UrlDetailActivity.class);
+                intent.putExtra("INTENT_URL",list.get(i).getUrl());
+                startActivity(intent);
+            }
+        });
+    }
+
     private void initView() {
         tabLayout = findViewById(R.id.main_tab_layout);
         viewPager = findViewById(R.id.main_iew_pager);
         searchView = findViewById(R.id.main_searchView);
-        recyclerView = findViewById(R.id.search_recycleview);
+        listView = findViewById(R.id.main_listview);
+        //  recyclerView = findViewById(R.id.search_recycleview);
         Log.d(TAG, "fragment :" + fragments);
         if (mainViewPagerAdapter == null) {
             mainViewPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager(), fragments, mTabName.length, mTabName);

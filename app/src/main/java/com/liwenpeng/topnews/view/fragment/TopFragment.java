@@ -231,6 +231,7 @@ public class TopFragment extends LazyLoadFragment  {
                     mData.get(i).getThumbnail_pic_s());
             MyApplication.getInstances().getDaoSession().insert(gdBean);
 
+
         }
         mHandler.sendEmptyMessage(1);
     }
