@@ -15,6 +15,7 @@ import com.liwenpeng.topnews.bean.table_shehui.SocialBean;
 import com.liwenpeng.topnews.bean.table_shehui.SocialBeanDao;
 
 import com.liwenpeng.topnews.bean.NewsBean;
+import com.liwenpeng.topnews.bean.table_top.GDBean;
 import com.liwenpeng.topnews.constant.UrlBaseConstant;
 import com.liwenpeng.topnews.util.NetStatusUtil;
 import com.liwenpeng.topnews.util.OkHttpUtil;
@@ -214,6 +215,7 @@ public class ShehuiFragment extends LazyLoadFragment  {
 
     //保存到数据库，以便离线可以访问
     private void saveDataToDB(List<NewsBean.ResultBean.DataBean> mData) {
+        MyApplication.getInstances().getDaoSession().deleteAll(SocialBean.class);
         Log.d(TAg,"go to saveDataToDB :"+mData.size());
         for (int i=0;i<mData.size();i++){
             socialBean = new SocialBean(null,

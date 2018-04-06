@@ -73,85 +73,6 @@ public class GuoNeiFragment extends LazyLoadFragment  {
         }
     });
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_top, null, false);
-        recyclerView = view.findViewById(R.id.top_recycleview);
-
-        refreshLayout = view.findViewById(R.id.refreshLayout);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //for the net
-                //topResponse = OkHttpUtil.getOkHttpResponse(getActivity(), UrlBaseConstant.TOP_URL, Toast.LENGTH_SHORT);
-                NewsBean topResponse = OkHttpUtil.getOkHttpResponse(url);
-                Log.d(TAg,"topResponse :"+topResponse);
-                Log.d(TAg,"getResult :"+topResponse.getResult());
-                Log.d(TAg,"getData :"+topResponse.getResult().getData());
-                data = topResponse.getResult().getData();
-                Log.d(TAg,"data :"+data.size());
-                for (int i = 0 ; i <10 ;i ++){
-                    mCutData.add(data.get(i));
-                }
-                adapter = new RecycleViewAdapter(mCutData);
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
-                        recyclerView.setAdapter(adapter);
-                        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-                            @Override
-                            public void onRefresh(RefreshLayout refreshlayout) {
-                                refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
-                                Log.d(TAg,"onRefresh");
-                                Log.d(TAg,"isMainThread :"+ ToolUtils.isMainThread());
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        NewsBean topResponse = OkHttpUtil.getOkHttpResponse(url);
-                                        data = topResponse.getResult().getData();
-                                        getActivity().runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                adapter = new RecycleViewAdapter(data);
-                                                recyclerView.setAdapter(adapter);
-                                            }
-                                        });
-                                    }
-                                }).start();
-
-                            }
-                        });
-                        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-                            @Override
-                            public void onLoadMore(RefreshLayout refreshlayout) {
-                                refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
-                                Log.d(TAg,"onLoadMore");
-                                Log.d(TAg,"onLoadMore");
-                                if (hasLoadDataONCE){
-                                    Toast.makeText(getActivity(),"数据已全部加载",Toast.LENGTH_SHORT).show();
-                                }else {
-                                    RecycleViewAdapter recycleViewAdapter = new RecycleViewAdapter(data);
-                                    recyclerView.setAdapter(recycleViewAdapter);
-                                    hasLoadDataONCE = true;
-                                    //  refreshlayout.setEnableRefresh(false);
-                                }
-
-
-                            }
-                        });
-                    }
-                });
-            }
-        }).start();
-
-
-        return view;
-    }
 
 
     @Override
@@ -301,6 +222,7 @@ public class GuoNeiFragment extends LazyLoadFragment  {
 
     //保存到数据库，以便离线可以访问
     private void saveDataToDB(List<NewsBean.ResultBean.DataBean> mData) {
+        MyApplication.getInstances().getDaoSession().deleteAll(GuoNeiBean.class);
         Log.d(TAg,"go to saveDataToDB :"+mData.size());
         for (int i=0;i<mData.size();i++){
             guoNeiBean = new GuoNeiBean(null,

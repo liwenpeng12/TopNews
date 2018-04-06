@@ -42,13 +42,15 @@ public class TopFragment extends LazyLoadFragment  {
     private List<NewsBean.ResultBean.DataBean> data;
     private List<NewsBean.ResultBean.DataBean> mCutData =new ArrayList<NewsBean.ResultBean.DataBean>();
 
-    //缓存的list重新生成该recycleview需要的List
-    private List<NewsBean.ResultBean.DataBean> cachedData =new ArrayList<NewsBean.ResultBean.DataBean>();
-
     private RecycleViewAdapter adapter;
     private RefreshLayout refreshLayout;
     private boolean hasLoadDataONCE = false;
     private boolean hasLoadDataTWICE = false;
+
+
+    //缓存的list重新生成该recycleview需要的List
+    private List<NewsBean.ResultBean.DataBean> cachedData =new ArrayList<NewsBean.ResultBean.DataBean>();
+
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -97,6 +99,7 @@ public class TopFragment extends LazyLoadFragment  {
 
                     refreshLayout = getContentView().findViewById(R.id.refreshLayout);
                     NewsBean topResponse = OkHttpUtil.getOkHttpResponse(url);
+                    Log.d(TAg,"topResponse:"+topResponse);
                     data = topResponse.getResult().getData();
                     for (int i = 0; i < 10; i++) {
                         mCutData.add(data.get(i));
@@ -216,6 +219,7 @@ public class TopFragment extends LazyLoadFragment  {
 
     //保存到数据库，以便离线可以访问
     private void saveDataToDB(List<NewsBean.ResultBean.DataBean> mData) {
+        MyApplication.getInstances().getDaoSession().deleteAll(GDBean.class);
         Log.d(TAg,"go to saveDataToDB :"+mData.size());
         for (int i=0;i<mData.size();i++){
             gdBean = new GDBean(null,
