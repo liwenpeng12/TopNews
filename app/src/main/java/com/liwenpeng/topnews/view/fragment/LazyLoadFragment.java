@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import solid.ren.skinlibrary.base.SkinBaseFragment;
+
 /**
  * Fragment预加载问题的解决方案：
  * 1.可以懒加载的Fragment
@@ -22,7 +24,7 @@ import android.widget.Toast;
  * blog ：http://blog.csdn.net/linglongxin24/article/details/53205878
  */
 
-public abstract class LazyLoadFragment extends Fragment {
+public abstract class LazyLoadFragment extends SkinBaseFragment {
     /**
      * 视图是否已经初初始化
      */

@@ -53,7 +53,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+import solid.ren.skinlibrary.base.SkinBaseActivity;
+
+public class MainActivity extends SkinBaseActivity {
     private static final String TAG = "MainActivity";
     private static final int TAKE_PHOTO = 1;
     private TabLayout tabLayout;

@@ -15,7 +15,9 @@ import android.widget.ProgressBar;
 import com.liwenpeng.topnews.R;
 import com.liwenpeng.topnews.util.NetStatusUtil;
 
-public class UrlDetailActivity extends AppCompatActivity {
+import solid.ren.skinlibrary.base.SkinBaseActivity;
+
+public class UrlDetailActivity extends SkinBaseActivity {
 
     private static final String APP_CACAHE_DIRNAME = "webview_cache";
     private static final String TAG = "UrlDetailActivity";

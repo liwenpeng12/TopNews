@@ -10,9 +10,10 @@ import android.widget.Button;
 
 import com.liwenpeng.topnews.R;
 
+import solid.ren.skinlibrary.base.SkinBaseActivity;
 
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends SkinBaseActivity {
 
     private CustomVideoView customVideoView;
 

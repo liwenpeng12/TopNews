@@ -49,6 +49,8 @@ dependencies {
     //轮播图
     compile 'com.youth.banner:banner:1.4.10'  //最新版本
 
+    //日夜间切换
+    compile 'com.solid.skin:skinlibrary:2.0.0-beta3'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
     compile 'com.google.code.gson:gson:2.8.2'
     compile 'com.android.support:appcompat-v7:26.1.0'

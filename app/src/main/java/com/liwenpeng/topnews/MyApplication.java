@@ -6,11 +6,13 @@ import android.database.sqlite.SQLiteDatabase;
 import com.liwenpeng.topnews.bean.table_top.DaoMaster;
 import com.liwenpeng.topnews.bean.table_top.DaoSession;
 
+import solid.ren.skinlibrary.base.SkinBaseApplication;
+
 /**
  * liwenpeng
  * 2018/4/5 13:55
  */
-public class MyApplication extends Application {
+public class MyApplication extends SkinBaseApplication {
     private DaoMaster.DevOpenHelper mHelper;
     private SQLiteDatabase db;
     private DaoMaster mDaoMaster;
